@@ -3,7 +3,7 @@
 
 ## Synopsis
 
-Contains helper functions needed for common operations in Javascript
+This project contains helper functions needed for common operations in Javascript.  Two main functions are supported currently. Parsing the query parameters of a URL and parsing the cookie values of the document.
 
 ## Code Example
 
