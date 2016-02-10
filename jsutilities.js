@@ -50,20 +50,18 @@ if (jsutilities == undefined) {
         var cookiesHashCode = undefined;
 
         this.getCookie = function(cookieName) {
-            if (cookiesHashCode != this.getHashCode(document.cookie))
-                cookiesHash = new Object();
-            if (!(cookieName in cookiesHash))
-                cookiesHash[cookieName] = new SearchParameter(cookieName, document.cookie, ';');
+            cookiesHashCode != this.getStringHashCode(document.cookie) && cookiesHash = new Object();
+            !(cookieName in cookiesHash) && cookiesHash[cookieName] = new SearchParameter(cookieName, document.cookie, ';');
             return cookiesHash[cookieName] != undefined ? cookiesHash[cookieName].unescapedValue : undefined;
         };
 
         this.getParameter = function(parameterName) {
-            if (!(parameterName in parametersHash))
-                parametersHash[parameterName] = new SearchParameter(parameterName, document.location.search, '&');
+            !(parameterName in parametersHash) && parametersHash[parameterName] = new SearchParameter(parameterName, document.location.search, '&');
             return parametersHash[parameterName] != undefined ? parametersHash[parameterName].uriDecodedValue : undefined;
         };
 
-        this.getHashCode = function(value){
+        this.getStringHashCode = function(value){
+            (!value.prototype.length || !value.prototype.charCodeAt) && value = value.toString();
             var hash = 0;
             var strlen = value.length;
             if (strlen == 0) return hash;
@@ -73,7 +71,11 @@ if (jsutilities == undefined) {
                 hash = hash & hash; // Convert to 32bit integer
             }
             return hash;
-        }
+        };
+
+        !String.prototype.hashCode && String.prototype.hashCode = function() {
+            return jsutilities.getStringHashCode(this);
+        };
 
     }();
     
