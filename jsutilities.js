@@ -37,7 +37,7 @@ if (jsutilities == undefined) {
                 if (parameterStart != -1) {
                     parameterStart = parameterStart + this.name.length + 1;
                     var parameterEnd = parameterString.indexOf(endDelimiter, parameterStart);
-                    if (parameterEnd == -1) { parameterEnd = parameterString.length; }
+                    parameterEnd == -1 && parameterEnd = parameterString.length;
                     this.encodedValue = parameterString.substring(parameterStart, parameterEnd);
                     this.uriDecodedValue = decodeURIComponent(this.encodedValue.replace(/\+/g, ' '));
                     this.unescapedValue = unescape(this.encodedValue);
