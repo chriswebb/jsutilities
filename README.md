@@ -24,20 +24,38 @@ Either include the jsutilties.js file in a script tag. Or embed the source direc
 
 ## API Reference
 
-Two functions provided by this interface:
+### Functions
 
-1. getCookie
-2. getParameter
+ -  `jsutilities.getCookie(String)` : `String`
 
-### getCookie(cookieName)
+	This will return the value for the cookie stored under the cookie name passed.
+	```js
+	var cookieValue = jsutilities.getCookie('cookieName');
+	```
 
-This will return the value for the cookie stored under the cookie name passed.
-> var cookieValue = jsutilities.getCookie('cookieName');
+ - `jsutilities.getParameter(String)` : `String`
 
-### getParameter(parameterName)
+	This will return the value for the query parameter stored under the query parameter name passed.
+	```js
+	var queryParameterValue = jsutilities.getParameter('queryParameterName');
+	```
 
-This will return the value for the query parameter stored under the query parameter name passed.
-> var queryParameterValue = jsutilities.getParameter('queryParameterName');
+ - `jsutilities.getStringHashCode(String)` : `String`
+
+	This will return the java-style hashCode for the string passed.
+	```js
+	var stringData = 'data';
+	var hashCode = jsutilities.getStringHashCode(stringData);
+	```
+
+ - `String.prototype.hashCode()` : `String`
+
+	This will return the java-style hashCode for the string passed using the getStringHashCode function above. 
+	If the function is defined, it does not overwrite.
+	```js
+	var stringData = 'data';
+	var hashCode = stringData.hashCode();
+	```
 
 
 ## License
