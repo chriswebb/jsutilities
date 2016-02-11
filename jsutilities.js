@@ -23,60 +23,56 @@ SOFTWARE.
 */
 
 
-if (jsutilities == undefined) { 
+var jsutilities = new function() {
 
-    var jsutilities = new function() {
+    var SearchParameter = function(parameterName, parameterString, endDelimiter) {
+        this.name = parameterName;
+        this.uriDecodedValue = undefined;
+        this.encodedValue = undefined;
+        this.unescapedValue = undefined;
+        var self = this;
+        parameterString.length > 0 && function(){
+            var parameterStart = parameterString.indexOf(self.name + '=');
+            parameterStart != -1 && function(){
+                parameterStart = parameterStart + self.name.length + 1;
+                var parameterEnd = parameterString.indexOf(endDelimiter, parameterStart);
+                parameterEnd == -1 && (parameterEnd = parameterString.length);
+                self.encodedValue = parameterString.substring(parameterStart, parameterEnd);
+                self.uriDecodedValue = decodeURIComponent(self.encodedValue.replace(/\+/g, ' '));
+                self.unescapedValue = unescape(self.encodedValue);
+            }();
+        }();
+    };
 
-        var SearchParameter = function(parameterName, parameterString, endDelimiter) {
-            this.name = parameterName;
-            this.uriDecodedValue = undefined;
-            this.encodedValue = undefined;
-            this.unescapedValue = undefined;
-            if (parameterString.length > 0) {
-                var parameterStart = parameterString.indexOf(this.name + '=');
-                if (parameterStart != -1) {
-                    parameterStart = parameterStart + this.name.length + 1;
-                    var parameterEnd = parameterString.indexOf(endDelimiter, parameterStart);
-                    parameterEnd == -1 && parameterEnd = parameterString.length;
-                    this.encodedValue = parameterString.substring(parameterStart, parameterEnd);
-                    this.uriDecodedValue = decodeURIComponent(this.encodedValue.replace(/\+/g, ' '));
-                    this.unescapedValue = unescape(this.encodedValue);
-                }
-            }
-        };
+    var self = this;
+    var parametersHash = new Object();
+    var cookiesHash = new Object();
+    var cookiesHashCode = undefined;
 
-        var parametersHash = new Object();
-        var cookiesHash = new Object();
-        var cookiesHashCode = undefined;
+    this.getCookie = function(cookieName) {
+        cookiesHashCode != this.getStringHashCode(document.cookie) && (cookiesHash = new Object());
+        !(cookieName in cookiesHash) && (cookiesHash[cookieName] = new SearchParameter(cookieName, document.cookie, ';'));
+        return cookiesHash[cookieName] != undefined ? cookiesHash[cookieName].unescapedValue : undefined;
+    };
 
-        this.getCookie = function(cookieName) {
-            cookiesHashCode != this.getStringHashCode(document.cookie) && cookiesHash = new Object();
-            !(cookieName in cookiesHash) && cookiesHash[cookieName] = new SearchParameter(cookieName, document.cookie, ';');
-            return cookiesHash[cookieName] != undefined ? cookiesHash[cookieName].unescapedValue : undefined;
-        };
+    this.getParameter = function(parameterName) {
+        !(parameterName in parametersHash) && (parametersHash[parameterName] = new SearchParameter(parameterName, document.location.search, '&'));
+        return parametersHash[parameterName] != undefined ? parametersHash[parameterName].uriDecodedValue : undefined;
+    };
 
-        this.getParameter = function(parameterName) {
-            !(parameterName in parametersHash) && parametersHash[parameterName] = new SearchParameter(parameterName, document.location.search, '&');
-            return parametersHash[parameterName] != undefined ? parametersHash[parameterName].uriDecodedValue : undefined;
-        };
+    this.getStringHashCode = function(value){
+        (!value.length || !value.charCodeAt) && (value = value.toString());
+        var hash = 0;
+        var strlen = value.length;
+        for (var i = 0; i < strlen; i++) {
+            var character = value.charCodeAt(i);
+            hash = ((hash<<5)-hash)+character;
+            hash = hash & hash; // Convert to 32bit integer
+        }
+        return hash;
+    };
 
-        this.getStringHashCode = function(value){
-            (!value.prototype.length || !value.prototype.charCodeAt) && value = value.toString();
-            var hash = 0;
-            var strlen = value.length;
-            if (strlen == 0) return hash;
-            for (var i = 0; i < strlen; i++) {
-                var character = value.charCodeAt(i);
-                hash = ((hash<<5)-hash)+character;
-                hash = hash & hash; // Convert to 32bit integer
-            }
-            return hash;
-        };
-
-        !String.prototype.hashCode && String.prototype.hashCode = function() {
-            return jsutilities.getStringHashCode(this);
-        };
-
-    }();
-    
-}
+    !String.prototype.hashCode && (String.prototype.hashCode = function() {
+        return self.getStringHashCode(this);
+    });
+}();
