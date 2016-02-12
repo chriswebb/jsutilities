@@ -11,8 +11,11 @@ If a user browses to your website with query parameters in the URL, e.g. https:/
 
 To get the value for query parameter 'q', one would do the following:
 
+```js
 > var value = jsutilities.getParameter('q');
-
+> value
+"test"
+```
 
 ## Motivation
 
