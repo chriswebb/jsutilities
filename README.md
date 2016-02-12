@@ -40,7 +40,7 @@ Either include the jsutilties.js file in a script tag. Or embed the source direc
 	var queryParameterValue = jsutilities.getParameter('queryParameterName');
 	```
 
- - `jsutilities.getStringHashCode(String)` : `String`
+ - `jsutilities.getStringHashCode(String)` : `Int32`
 
 	This will return the java-style hashCode for the string passed.
 	```js
@@ -48,7 +48,7 @@ Either include the jsutilties.js file in a script tag. Or embed the source direc
 	var hashCode = jsutilities.getStringHashCode(stringData);
 	```
 
- - `String.prototype.hashCode()` : `String`
+ - `String.prototype.hashCode()` : `Int32`
 
 	This will return the java-style hashCode for the string passed using the getStringHashCode function above. 
 	If the function is defined, it does not overwrite.
